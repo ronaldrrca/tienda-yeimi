@@ -1,7 +1,11 @@
-body {
-    font-family: Arial, sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
     text-align: center;
 }
 
@@ -30,6 +34,26 @@ nav ul li a {
     text-decoration: none;
 }
 
+main {
+    width: 100%;
+    padding: 3rem 2rem;
+    /* background-color: pink; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.producto-detalle_informacion{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid red;
+}
+
 .productos {
     display: flex;
     flex-wrap: wrap;
@@ -45,15 +69,24 @@ nav ul li a {
     text-align: center;
 }
 
-.producto img {
+.producto h3 {
+    font-size: 1.6rem;
+}
+
+.producto p, .producto a {
+    font-size: 1.4rem;
+}
+
+/* .producto img {
     width: 100%;
     height: auto;
-}
+} */
 
-.img_producto_index{
-    width: 100px;
+.img_producto_index, .img_producto_producto{
+    width: 20rem;
+    overflow: hidden;
 }
-
+/* 
 .btn {
     display: inline-block;
     margin-top: 10px;
@@ -62,4 +95,61 @@ nav ul li a {
     color: white;
     text-decoration: none;
     border-radius: 5px;
+}
+
+#form_producto{
+    display: flex;
+    flex-direction: column;
+}
+*/
+#form_producto_cantidad{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#form_producto_cantidad #cantidad{
+    width: 5rem;
+    text-align: center;
+
+}
+/*______________________________________________*/
+
+/* .producto-detalle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 40px;
+}
+
+.producto-detalle img {
+    width: 300px;
+    border-radius: 10px;
+} */
+
+/* .producto-detalle div {
+    max-width: 200px;
+    text-align: left;
+} */
+
+.producto-detalle h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.btn {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #218838;
 }

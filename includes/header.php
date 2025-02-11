@@ -23,7 +23,7 @@
 
             <?php elseif (isset($_SESSION["id_usuario"])): ?>
                 <span>Bienvenido, <?php echo htmlspecialchars($_SESSION["nombre_usuario"]); ?> (<?php echo $_SESSION["rol"]; ?>)</span>
-                <a href="./usuarios/logout.php">Cerrar Sesión</a>
+                <a href="usuarios/logout.php">Cerrar Sesión</a>
                 <a href="admin_panel.php">Panel de Administración</a>
 
             <?php else: ?>

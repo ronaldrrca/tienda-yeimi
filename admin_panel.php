@@ -19,14 +19,14 @@ $rol = $_SESSION["rol"];
 </head>
 <body>
 <header>
-<nav>
-    <ul>
-        <?php if ($rol === "admin"): ?>
-            <li><a href="admin_usuarios.php">Gestionar Usuarios</a></li>
-        <?php endif; ?>
-        <li><a href="gestionar_productos.php">Gestionar Productos</a></li>
-        <li><a href="../usuarios/logout.php">Cerrar Sesión</a></li>
-    </ul>
+    <nav>
+        <ul>
+            <?php if ($rol === "admin"): ?>
+                <li><a href="admin_usuarios.php">Gestionar Usuarios</a></li>
+            <?php endif; ?>
+            <li><a href="gestionar_productos.php">Gestionar Productos</a></li>
+            <li><a href="usuarios/logout.php">Cerrar Sesión</a></li>
+        </ul>
 </nav>
 
 </header>

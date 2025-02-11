@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Si falla el login
-    header("Location: ../admin_login.php?error=1");
+    header("Location: ../login_admin.php?error=1");
     exit();
 }
 ?>

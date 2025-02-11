@@ -2,9 +2,10 @@
 session_start();
 require_once "../includes/conexion.php";
 
-// Verificar si el usuario ha iniciado sesión (suponiendo que tienes autenticación de clientes)
+// Si el usuario no está autenticado, redirigir al login
 if (!isset($_SESSION["id_cliente"])) {
-    header("Location: ../login.php");
+    $returnUrl = isset($_POST["returnUrl"]) ? urlencode($_POST["returnUrl"]) : urlencode("../index.php");
+    header("Location: ../login.php?returnUrl=" . $returnUrl);
     exit();
 }
 
@@ -14,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idProducto = $_POST["id_producto"];
     $cantidad = $_POST["cantidad"];
 
-    // Obtener el precio del producto
     $query = "SELECT precio_producto FROM productos WHERE id_producto = ?";
     $stmt = $conexion->prepare($query);
     $stmt->bind_param("i", $idProducto);
@@ -24,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $precio = $producto["precio_producto"];
     $stmt->close();
 
-    // Verificar si el producto ya está en el carrito del cliente
     $query = "SELECT cantidad_carrito FROM carrito WHERE idCliente_carrito = ? AND idProducto_carrito = ?";
     $stmt = $conexion->prepare($query);
     $stmt->bind_param("ii", $idCliente, $idProducto);
@@ -32,12 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $resultado = $stmt->get_result();
 
     if ($resultado->num_rows > 0) {
-        // Si ya existe, actualizar la cantidad
         $query = "UPDATE carrito SET cantidad_carrito = cantidad_carrito + ?, precioUnitario_carrito = ? WHERE idCliente_carrito = ? AND idProducto_carrito = ?";
         $stmt = $conexion->prepare($query);
         $stmt->bind_param("diii", $cantidad, $precio, $idCliente, $idProducto);
     } else {
-        // Si no existe, agregar el producto
         $query = "INSERT INTO carrito (idCliente_carrito, idProducto_carrito, cantidad_carrito, precioUnitario_carrito) VALUES (?, ?, ?, ?)";
         $stmt = $conexion->prepare($query);
         $stmt->bind_param("iiid", $idCliente, $idProducto, $cantidad, $precio);
@@ -49,4 +46,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 ?>
-

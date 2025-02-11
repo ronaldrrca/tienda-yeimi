@@ -1,24 +1,52 @@
 <?php
 session_start();
+require_once "../includes/conexion.php";
+
+// Verificar si el usuario ha iniciado sesión (suponiendo que tienes autenticación de clientes)
+if (!isset($_SESSION["id_cliente"])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+$idCliente = $_SESSION["id_cliente"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idProducto = $_POST["id_producto"];
     $cantidad = $_POST["cantidad"];
 
-    // Verificar si el carrito ya tiene el producto
-    if (isset($_SESSION["carrito"][$idProducto])) {
-        $_SESSION["carrito"][$idProducto] += $cantidad;
+    // Obtener el precio del producto
+    $query = "SELECT precio_producto FROM productos WHERE id_producto = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("i", $idProducto);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $producto = $resultado->fetch_assoc();
+    $precio = $producto["precio_producto"];
+    $stmt->close();
+
+    // Verificar si el producto ya está en el carrito del cliente
+    $query = "SELECT cantidad_carrito FROM carrito WHERE idCliente_carrito = ? AND idProducto_carrito = ?";
+    $stmt = $conexion->prepare($query);
+    $stmt->bind_param("ii", $idCliente, $idProducto);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    if ($resultado->num_rows > 0) {
+        // Si ya existe, actualizar la cantidad
+        $query = "UPDATE carrito SET cantidad_carrito = cantidad_carrito + ?, precioUnitario_carrito = ? WHERE idCliente_carrito = ? AND idProducto_carrito = ?";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("diii", $cantidad, $precio, $idCliente, $idProducto);
     } else {
-        $_SESSION["carrito"][$idProducto] = $cantidad;
+        // Si no existe, agregar el producto
+        $query = "INSERT INTO carrito (idCliente_carrito, idProducto_carrito, cantidad_carrito, precioUnitario_carrito) VALUES (?, ?, ?, ?)";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("iiid", $idCliente, $idProducto, $cantidad, $precio);
     }
-    // echo $idProducto;
-    // echo $cantidad;die();
+    $stmt->execute();
+    $stmt->close();
+
     header("Location: ../carrito.php");
     exit();
 }
-/*
-Guarda los productos en $_SESSION["carrito"] con idProducto como clave y la cantidad como valor.
-Si el producto ya está en el carrito, aumenta la cantidad en lugar de sobrescribirla.
-Redirige al usuario a carrito.php después de añadir un producto.
-*/
 ?>
+

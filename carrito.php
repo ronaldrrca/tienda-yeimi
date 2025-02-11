@@ -1,26 +1,5 @@
 <?php
-session_start();
-require_once "includes/conexion.php";
-
-$productosEnCarrito = isset($_SESSION["carrito"]) ? $_SESSION["carrito"] : [];
-
-// Si el carrito está vacío, mostrar mensaje
-if (empty($productosEnCarrito)) {
-    echo "<h2>Tu carrito está vacío.</h2>";
-    exit();
-}
-
-// Consultar los productos en el carrito
-$productos = [];
-foreach ($productosEnCarrito as $idProducto => $cantidad) {
-    $query = "SELECT id_producto, nombre_producto, precio_producto, imagen_producto FROM productos WHERE id_producto = $idProducto";
-    $resultado = $conexion->query($query);
-    if ($resultado->num_rows > 0) {
-        $producto = $resultado->fetch_assoc();
-        $producto["cantidad"] = $cantidad;
-        $productos[] = $producto;
-    }
-}
+require './carrito/ver_carrito.php'
 ?>
 
 <!DOCTYPE html>
@@ -47,27 +26,36 @@ foreach ($productosEnCarrito as $idProducto => $cantidad) {
         <?php
         $total = 0;
         foreach ($productos as $producto):
-            $subtotal = $producto["precio_producto"] * $producto["cantidad"];
+            $subtotal = $producto["precio_producto"] * $producto["cantidad_carrito"];
             $total += $subtotal;
         ?>
         <tr>
-            <td><img src="assets/img_tienda/<?php echo $producto['imagen_producto']; ?>" width="50"></td>
-            <td><?php echo $producto["nombre_producto"]; ?></td>
-            <td>$<?php echo number_format($producto["precio_producto"], 2); ?></td>
-            <td><?php echo $producto["cantidad"]; ?></td>
-            <td>$<?php echo number_format($subtotal, 2); ?></td>
-            <td>
-                <a href="carrito/eliminar.php?id=<?php echo $producto["id_producto"]; ?>">Eliminar</a>
-            </td>
-        </tr>
+    <td><img src="assets/img_tienda/<?php echo $producto['imagen_producto']; ?>" width="50"></td>
+    <td><?php echo $producto["nombre_producto"]; ?></td>
+    <td>$<?php echo number_format($producto["precio_producto"], 2); ?></td>
+    <td>
+        <button type="button" class="btn-menos" data-id="<?php echo $producto['idProducto_carrito']; ?>">-</button>
+        <span id="cantidad-<?php echo $producto['idProducto_carrito']; ?>">
+            <?php echo $producto["cantidad_carrito"]; ?>
+        </span>
+        <button type="button" class="btn-mas" data-id="<?php echo $producto['idProducto_carrito']; ?>">+</button>
+    </td>
+    <td id="subtotal-<?php echo $producto['idProducto_carrito']; ?>">
+        $<?php echo number_format($subtotal, 2); ?>
+    </td>
+    <td>
+        <a href="carrito/eliminar.php?id=<?php echo $producto["idProducto_carrito"]; ?>">Eliminar</a>
+    </td>
+</tr>
+
         <?php endforeach; ?>
     </table>
 
     <h3>Total: $<?php echo number_format($total, 2); ?></h3>
 
-    <a href="procesarCompra.php" class="btn">Finalizar Compra</a>
+    <a href="procesar_compra.php" class="btn">Finalizar Compra</a>
 
     <?php include "includes/footer.php"; ?>
-
+    <script src="./assets/js/carrito.js"></script>
 </body>
 </html>

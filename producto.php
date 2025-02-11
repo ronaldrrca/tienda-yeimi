@@ -1,22 +1,5 @@
 <?php
-require_once "includes/conexion.php";
-
-// Verificar si se envió un ID válido
-if (!isset($_GET["id_producto"]) || !is_numeric($_GET["id_producto"])) {
-    die("Producto no válido.");
-}
-
-$id = $_GET["id_producto"];
-
-// Consultar el producto en la base de datos
-$query = "CALL verProductoPorId($id)";
-$result = $conexion->query($query);
-
-if ($result->num_rows == 0) {
-    die("Producto no encontrado.");
-}
-
-$producto = $result->fetch_assoc();
+include './productos/ver_producto.php';
 ?>
 
 <!DOCTYPE html>

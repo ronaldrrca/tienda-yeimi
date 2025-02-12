@@ -159,3 +159,17 @@ main {
 .btn:hover {
     background: #218838;
 }
+
+#logout-message { 
+    position: fixed;
+        top: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 128, 0, 0.9);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: opacity 1s;
+}

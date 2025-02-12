@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once "includes/conexion.php";
-
-
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +22,9 @@ require_once "includes/conexion.php";
     
     <button type="submit">Iniciar sesión</button>
 </form>
+<?php if (isset($_GET['error']) && $_GET['error'] == 1): ?>
+    <p style="color: red; text-align: center;">❌ Correo o contraseña incorrectos.</p>
+<?php endif; ?>
 
 
     <?php if (isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>

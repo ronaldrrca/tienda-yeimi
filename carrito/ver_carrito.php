@@ -1,10 +1,9 @@
 <?php 
-session_start();
 require_once "includes/conexion.php";
 
 // Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION["id_usuario"]) && !isset($_SESSION["id_cliente"])) {
-    header("Location: login.php");
+if (!isset($_SESSION["id_cliente"]) && !isset($_SESSION["id_cliente"])) {
+    header("Location: login_cliente.php");
     exit();
 }
 

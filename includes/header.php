@@ -1,8 +1,3 @@
-<?php
-// session_start();
-?>
-
-<!-- <?php session_start(); ?> -->
 <header>
     <h1>Mi Tienda</h1>
     <nav>

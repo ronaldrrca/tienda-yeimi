@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,9 +11,7 @@
 
 <h2>Iniciar Sesión</h2>
 
-<?php if (isset($_GET["error"])): ?>
-    <p style="color: red;">Usuario o contraseña incorrectos.</p>
-<?php endif; ?>
+
 
 <form action="./usuarios/procesar_admin_login.php" method="POST">
     <label for="usuario">Usuario:</label>
@@ -23,7 +22,9 @@
 
     <button type="submit">Ingresar</button>
 </form>
-
+<?php if (isset($_GET["error"])): ?>
+    <p style="color: red;">Usuario o contraseña incorrectos.</p>
+<?php endif; ?>
 
 <?php include './includes/footer.php'  ?>
 </body>
